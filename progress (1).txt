@@ -1,0 +1,288 @@
+====================================================================
+MOHEF TECH - PROJECT PROGRESS TRACKER
+====================================================================
+Lokasi project: cp-moheftech
+Dokumen acuan: PRD_moheftechcompany_v1.1.md
+Dibuat: 26 September 2026
+Terakhir update: 26 September 2026
+
+Cara pakai file ini:
+- Section "ROADMAP" diupdate statusnya setiap kali satu langkah selesai.
+- Section "CHANGE LOG" ditambah setiap kali ada keputusan baru atau
+  perubahan arah di tengah jalan, supaya riwayatnya tidak hilang.
+- Section "CATATAN & KEPUTUSAN" adalah rangkuman kenapa project ini
+  dibentuk seperti ini, untuk dibaca ulang kalau lupa konteks.
+
+====================================================================
+LATAR BELAKANG PROJECT
+====================================================================
+
+Tujuan awal:
+- Awalnya rencana hanya untuk catatan tarif pribadi (pengganti excel),
+  supaya saat client tanya harga (POS kasir, aplikasi gudang, servis
+  laptop, dsb) tidak perlu buka-buka catatan manual.
+- Berkembang jadi: catatan pribadi tsb dibungkus jadi company profile
+  yang bisa dikirim ke client, sekaligus punya potensi menjaring
+  client baru yang menemukan website secara organik (bonus, bukan
+  tujuan utama).
+
+Prioritas pengguna (urutan penting):
+1. Admin (pemilik/Hendra) - pengguna paling sering, dari LAPTOP.
+2. Client yang dikirimi link - sudah kenal/bertanya, dari HP.
+3. Pengunjung publik yang menemukan sendiri - bonus.
+
+Prinsip utama yang disepakati:
+"Jangan membangun infrastruktur untuk masalah yang belum dimiliki
+Mohef Tech."
+
+====================================================================
+CATATAN & KEPUTUSAN PENTING (kronologis)
+====================================================================
+
+1. REVIEW PRD AWAL (V1)
+   - PRD awal sudah disiplin soal scope, tapi ditulis seolah
+     pengunjung asing adalah pengguna utama.
+   - Ditemukan beberapa kontradiksi: data ganda (profil vs
+     konfigurasi), autentikasi tidak konsisten (tabel Admin vs
+     environment variable), 3 flag lokasi yang tumpang tindih,
+     siteStatus yang tidak jelas gunanya.
+   - Celah: tidak ada portfolio/bukti kerja, tidak ada link per
+     layanan, format nomor WhatsApp berisiko salah format untuk
+     wa.me link.
+
+2. KLARIFIKASI TUJUAN ASLI
+   - Owner menjelaskan tujuan sebenarnya: catatan pribadi + alat
+     kirim ke client, bukan situs marketing untuk publik.
+   - Dampak: SEO diturunkan prioritasnya (realistis client baru
+     datang dari rujukan/WA/Google Business Profile, bukan dari
+     pencarian organik satu halaman ini).
+   - Link per layanan + preview WhatsApp naik jadi fitur inti,
+     karena itu cara utama owner "mengirim" jawaban ke client.
+
+3. MODEL HARGA - HARDWARE VS SOFTWARE
+   - Hardware: harga PASTI (mis. install ulang Rp100.000, ganti RAM
+     4GB/8GB beda harga). Di luar itu jasa, sparepart terpisah.
+   - Software: harga MULAI DARI, tapi TIDAK bisa dipatok per jenis
+     aplikasi (karena permintaan client sangat beragam: kasir,
+     gudang, ticketing, chatbot, penjadwalan instansi, dsb - tidak
+     bisa diprediksi semua kemungkinan).
+   - Keputusan final: software dihargai berdasarkan TINGKAT
+     KOMPLEKSITAS (Sederhana / Menengah / Kompleks), bukan jenis
+     aplikasi. Ditambah modul tambahan berharga sendiri.
+   - Konsekuensi ke data model: satu layanan bisa punya BEBERAPA
+     opsi harga (bukan satu harga tunggal). Struktur ini melayani
+     baik varian hardware maupun tingkat software sekaligus.
+
+4. PAKET / BUNDLING (dibahas, keputusan: ditunda)
+   - Sempat dibahas ide paket ala IPOS (Desktop Offline, Web Local
+     Server, Hybrid, Cloud Full) untuk aplikasi kasir.
+   - Model SaaS/langganan multi-tenant DITOLAK untuk sekarang -
+     aplikasi kasir owner dibuat untuk 1 client (cafe), bukan
+     dirancang multi-tenant. Menjual sebagai SaaS sekarang berarti
+     janji yang belum ada fondasinya.
+   - Paket Hybrid (offline+sync cloud) DITOLAK dari V1 - paling
+     rumit secara teknis, masuk kategori Custom/Konsultasi saja.
+   - Keputusan akhir: TIDAK ada paket kaku, owner tetap develop dari
+     nol sesuai permintaan client (lebih sesuai gaya kerja owner).
+
+5. PORTFOLIO
+   - Owner ternyata sudah py banyak project nyata: POS kasir (Flutter),
+     Mohef Assessment, Mohef Masjid (display jadwal sholat TV masjid),
+     Mohef Ticketing, Mohef Chatbot, Company Profile PMII Sidoarjo,
+     Sistem Gudang Clarice, Sistem Pembayaran SPP, Penjadwalan
+     Samapta Polres Mojokerto.
+   - Ini bukti kerja yang kuat, lebih meyakinkan client software
+     daripada tabel harga. DITAMBAHKAN ke V1 (sebelumnya ditunda ke
+     V2 di PRD awal).
+   - Aturan: proyek instansi/client HANYA ditampilkan dengan IZIN.
+     Kalau ragu/belum izin, ditulis generik.
+
+6. ADMIN & SUPER SIMPLE
+   - Semua kontrol dari admin (bukan hardcode) karena layanan/harga
+     memang dinamis dan terus bertambah sesuai permintaan.
+   - Ini mengonfirmasi keputusan pakai dashboard + database, bukan
+     file statis.
+   - Login admin: USERNAME TEKS BIASA (bukan email, mis. "mohammed")
+     + PASSWORD biasa (disimpan sebagai HASH).
+   - Username & hash password disimpan di ENVIRONMENT VARIABLE
+     (bukan tabel database). Tidak ada fitur ganti password di V1
+     (ganti manual via env var + redeploy kalau perlu, jarang
+     terjadi).
+   - Auth.js DILEPAS dari stack, diganti autentikasi custom
+     sederhana (kebutuhan cuma 1 admin, Auth.js kebanyakan fitur
+     yang tidak kepakai).
+
+7. NAVBAR & TAMPILAN HARGA
+   - TIDAK ada section "Harga" tersendiri di navbar.
+   - Harga tampil langsung di kartu layanan. Modal detail OPSIONAL -
+     hanya muncul kalau layanan butuh penjelasan (mis. ganti LCD,
+     vcore). Layanan yang sudah jelas (install ulang) tidak perlu
+     detail.
+   - Navbar final: Home, Layanan, Tentang, Kontak.
+
+8. RAPIKAN DATA GANDA
+   - PRD awal simpan data yang sama di 2 tempat (profil vs
+     pengaturan, kontak vs pengaturan) - berisiko tidak sinkron.
+   - Digabung jadi SATU tabel/halaman "Settings" (nama bisnis,
+     tagline, tentang, WhatsApp, GitHub, Google Maps, teks lokasi).
+   - Menu admin disederhanakan: Layanan, Portfolio, Pengaturan.
+
+9. LOKASI & siteStatus
+   - Lokasi fisik belum ada. Owner: client bisa ke rumah langsung
+     atau ketemu di tempat lain (cafe, dsb), tapi keputusan final
+     selalu lewat WhatsApp dan janjian.
+   - Disederhanakan: teks "Lokasi & Meeting" selalu tampil (bisa
+     diedit admin) + SATU saklar untuk Google Maps (default mati,
+     tinggal nyalakan kalau nanti py lokasi tetap).
+   - siteStatus (ide mode maintenance) DIHAPUS dari scope - gak
+     jelas gunanya dan sudah ada fitur nonaktifkan layanan individual
+     untuk kebutuhan serupa.
+
+10. ANALYTICS / PENGHITUNG KLIK WHATSAPP
+    - Dikonfirmasi: TIDAK PERLU, tetap di luar scope V1 (bukan celah
+      yang terlewat, memang sengaja tidak dipakai).
+
+11. TECH STACK - EVALUASI
+    - Stack awal: Next.js + TS + Tailwind + Prisma + PostgreSQL +
+      Auth.js + Vercel. Dinilai 90% sudah pas.
+    - Auth.js diganti custom auth (lihat poin 6).
+    - DITEMUKAN MASALAH: Vercel Hobby (free) SECARA EKSPLISIT
+      melarang penggunaan komersial. Website ini menghasilkan lead
+      untuk layanan berbayar = komersial = butuh Vercel Pro
+      ($20/bulan).
+    - Owner mau tetap gratis (no budget untuk hosting berbayar).
+    - Riset alternatif: Netlify Free & Cloudflare Pages Free
+      SAMA-SAMA MENGIZINKAN penggunaan komersial (beda dari Vercel
+      Hobby).
+    - Cloudflare Pages ditolak: fungsi server jalan di Workers
+      runtime (bukan Node.js penuh), berpotensi bikin Prisma/database
+      connection lebih ribet.
+    - KEPUTUSAN FINAL: pindah hosting ke NETLIFY (free, commercial
+      use diizinkan, dukungan resmi untuk Next.js, stack lain tidak
+      perlu berubah).
+    - Catatan: kebijakan free-tier platform bisa berubah sewaktu-
+      waktu, perlu dicek ulang saat implementasi.
+
+12. PRD v1.1 SELESAI DISUSUN
+    - Semua keputusan di atas dirangkum jadi 1 dokumen bersih:
+      PRD_moheftechcompany_v1.1.md
+    - Owner sudah setuju ("overall aman").
+
+13. ISU TEKNIS: PRISMA v7 vs v6 (ditemukan saat setup project)
+    - `npm install prisma` secara default terpasang versi 8.0.0-rc.17
+      (release candidate, belum stabil) yang ternyata sudah berubah
+      total jadi "Prisma Developer Platform" - CLI baru yang gabung
+      dengan platform hosting Prisma sendiri (project, deploy,
+      service, postgres, bucket, dll). Perintah classic seperti
+      `generate` dan `db pull` TIDAK ADA lagi di versi ini.
+    - Di versi 7 ke atas, `url`/`directUrl` di schema.prisma dihapus
+      total, harus pindah ke prisma.config.ts, dan PrismaClient wajib
+      pakai "adapter" eksplisit saat runtime. Ini perubahan arsitektur
+      besar, bukan cuma sintaks.
+    - KEPUTUSAN: PIN ke Prisma versi 6 (stabil, classic), bukan ikut
+      versi terbaru yang masih berubah-ubah:
+      npm uninstall prisma @prisma/client
+      npm install prisma@6 --save-dev
+      npm install @prisma/client@6
+    - Dengan v6: url/directUrl kembali bisa ditulis langsung di
+      schema.prisma datasource block, tidak perlu prisma.config.ts,
+      tidak perlu adapter eksplisit untuk PrismaClient.
+    - PELAJARAN: ke depan, kalau install ulang dependency di project
+      ini (misalnya di komputer/environment baru), SELALU pin versi
+      Prisma ke v6 secara eksplisit (`prisma@6`, `@prisma/client@6`),
+      jangan biarkan npm ambil versi "latest" secara default.
+
+====================================================================
+STACK FINAL (per PRD v1.1)
+====================================================================
+Frontend       : Next.js + TypeScript
+UI             : Tailwind CSS
+Backend        : Next.js Server Actions
+Database       : PostgreSQL (managed - kandidat: Supabase / Neon)
+ORM            : Prisma
+Authentication : Custom (username teks + password hash di env var)
+Validation     : Zod
+Deployment     : Netlify (free tier, commercial use diizinkan)
+Source Control : GitHub
+Architecture   : Modular Monolith
+
+====================================================================
+ROADMAP / LANGKAH DEVELOPMENT
+====================================================================
+Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
+
+[DONE]    1. Review & kritisi PRD awal
+[DONE]    2. Diskusi & finalisasi PRD v1.1 (business logic, tech stack,
+             hosting)
+[PROGRESS] 3. Setup project awal
+             - [DONE] Pilih provider database: NEON (bukan Supabase -
+               Supabase free tier pause total 7 hari tidak aktif harus
+               manual restart; Neon auto-resume ~500ms, lebih aman
+               untuk traffic yang belum tentu ramai)
+             - [DONE] Buat project Neon, region Singapore
+               (aws-ap-southeast-1), nama project "mohef-company"
+             - [DONE] init Next.js + TypeScript + Tailwind (tanpa
+               folder src/, langsung app/ di root)
+             - [DONE] Install & setup Prisma, terhubung ke Neon
+               (lihat catatan versi di bawah)
+             - [DONE] Setup environment variables (.env): DATABASE_URL
+               (pooled, dipakai aplikasi) & DIRECT_URL (direct, khusus
+               migrasi/CLI)
+             - [TODO] Setup akun Netlify + hubungkan repo GitHub
+             - [TODO] Push project ke GitHub repository
+[TODO]    4. Schema Prisma & migration awal
+             - model: Service, PriceOption, PriceHistory, Portfolio,
+               Settings (lihat PRD v1.1 §32)
+             - seed data dummy untuk testing
+[TODO]    5. Autentikasi admin (custom, bukan Auth.js)
+             - hash password, cek login, session/cookie
+             - proteksi route /admin/*
+[TODO]    6. Admin - CRUD Layanan + Opsi Harga
+             - tambah/edit/hapus/aktifkan layanan
+             - multi opsi harga per layanan (FIXED/STARTING_FROM/CUSTOM)
+             - internalNote (khusus admin)
+             - price history otomatis tercatat
+[TODO]    7. Admin - Portfolio (CRUD kartu proyek)
+[TODO]    8. Admin - Pengaturan (satu halaman terpadu)
+[TODO]    9. Halaman publik - Home
+[TODO]   10. Halaman publik - Layanan (list per pilar + search)
+[TODO]   11. Halaman publik - Service detail modal (opsional per layanan)
+[TODO]   12. Halaman publik - Tentang, Kontak, Portfolio
+[TODO]   13. Link per layanan (slug) + Open Graph preview WhatsApp
+[TODO]   14. WhatsApp integration (normalisasi nomor + encode pesan)
+[TODO]   15. SEO dasar, performa (Lighthouse check), aksesibilitas
+             modal (focus trap, esc, dsb)
+[TODO]   16. Testing menyeluruh (admin flow + user flow)
+[TODO]   17. Deployment ke Netlify + custom domain
+[TODO]   18. Verifikasi akhir vs Technical Definition of Done
+             (PRD v1.1 §47)
+
+====================================================================
+OPEN ITEMS (keputusan bisnis owner, bukan blocker teknis)
+====================================================================
+- [ ] Nominal tarif hardware (per varian, mis. RAM 4GB/8GB, dll)
+- [ ] Nominal tarif software per tingkat kompleksitas (Sederhana/
+      Menengah/Kompleks) + modul tambahan
+- [ ] Daftar lengkap layanan awal (nama, deskripsi, kategori/pilar)
+- [ ] Teks final About/Tentang & tagline (kalau mau diubah dari draft)
+- [ ] Aset logo + kode warna brand yang presisi
+- [ ] Izin penampilan nama proyek client tertentu di Portfolio
+      (terutama instansi: PMII, Polres Mojokerto, dll)
+- [ ] Konten kartu Portfolio final (proyek mana yang ditampilkan +
+      deskripsinya)
+- [ ] Pilih provider database final (Supabase vs Neon) setelah cek
+      perilaku cold-start/pause di free tier
+
+====================================================================
+CHANGE LOG
+====================================================================
+26 Sep 2026 - PRD v1.1 disetujui, progress.txt dibuat, mulai masuk
+              tahap setup project (cp-moheftech).
+
+26 Sep 2026 - Database provider final: Neon (bukan Supabase, soal
+              auto-pause). Region: Singapore. Project Next.js sudah
+              jalan, terhubung ke Neon lewat Prisma. Ditemukan &
+              diselesaikan isu Prisma v8-rc vs v6 - pin ke v6 stabil.
+              Sisa langkah 3: hubungkan ke Netlify + push ke GitHub.
+
+(tambahkan entri baru di bawah ini setiap ada perubahan penting)
