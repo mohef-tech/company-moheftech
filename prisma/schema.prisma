@@ -7,3 +7,81 @@ datasource db {
     url       = env("DATABASE_URL")
     directUrl = env("DIRECT_URL")
 }
+
+enum PriceType {
+    FIXED
+    STARTING_FROM
+    CUSTOM
+}
+
+model Service {
+    id               String   @id @default(cuid())
+    name             String
+    slug             String   @unique
+    category         String
+    pillar           String
+    shortDescription String
+    description      String?
+    internalNote     String?
+    isActive         Boolean  @default(true)
+    sortOrder        Int      @default(0)
+    createdAt        DateTime @default(now())
+    updatedAt        DateTime @updatedAt
+
+    priceOptions PriceOption[]
+}
+
+model PriceOption {
+    id        String    @id @default(cuid())
+    serviceId String
+    label     String
+    priceType PriceType
+    price     Int?
+    note      String?
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+
+    service      Service        @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+    priceHistory PriceHistory[]
+
+    @@index([serviceId])
+}
+
+model PriceHistory {
+    id            String   @id @default(cuid())
+    priceOptionId String
+    oldPrice      Int?
+    newPrice      Int?
+    createdAt     DateTime @default(now())
+
+    priceOption PriceOption @relation(fields: [priceOptionId], references: [id], onDelete: Cascade)
+
+    @@index([priceOptionId])
+}
+
+model Portfolio {
+    id               String   @id @default(cuid())
+    title            String
+    shortDescription String
+    solutionType     String
+    isVisible        Boolean  @default(true)
+    sortOrder        Int      @default(0)
+    createdAt        DateTime @default(now())
+    updatedAt        DateTime @updatedAt
+}
+
+model Settings {
+    id                      String   @id @default(cuid())
+    businessName            String
+    tagline                 String
+    aboutDescription        String
+    primaryWhatsapp         String
+    secondaryWhatsapp       String?
+    whatsappMessageTemplate String
+    githubUrl               String
+    googleMapsUrl           String?
+    showGoogleMaps          Boolean  @default(false)
+    locationMeetingText     String
+    createdAt               DateTime @default(now())
+    updatedAt               DateTime @updatedAt
+}

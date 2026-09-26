@@ -235,10 +235,13 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
              - [ ] (opsional, nanti) rename project Netlify dari nama
                acak ke nama yang lebih jelas
              - [ ] (opsional, nanti) hubungkan custom domain
-[TODO]    4. Schema Prisma & migration awal
-             - model: Service, PriceOption, PriceHistory, Portfolio,
-               Settings (lihat PRD v1.1 §32)
-             - seed data dummy untuk testing
+[DONE]    4. Schema Prisma & migration awal
+             - [DONE] model: Service, PriceOption, PriceHistory, Portfolio, Settings
+               (lihat PRD v1.1 §32)
+             - [DONE] seed data dummy untuk testing (manual insert lewat Prisma
+               Studio, bukan seed script): 1 Service -> 1 PriceOption ->
+               1 PriceHistory, relasi terverifikasi. Portfolio & Settings belum
+               diisi, tidak perlu untuk pengujian relasi ini.
 [TODO]    5. Autentikasi admin (custom, bukan Auth.js)
              - hash password, cek login, session/cookie
              - proteksi route /admin/*
@@ -289,5 +292,11 @@ CHANGE LOG
               jalan, terhubung ke Neon lewat Prisma. Ditemukan &
               diselesaikan isu Prisma v8-rc vs v6 - pin ke v6 stabil.
               Sisa langkah 3: hubungkan ke Netlify + push ke GitHub.
+
+26 Sep 2026 - Schema Prisma 5 model (Service, PriceOption, PriceHistory,
+              Portfolio, Settings) selesai didesain, migration pertama
+              (init_models) berhasil diterapkan ke Neon. Testing relasi
+              lewat Prisma Studio manual insert berhasil. Langkah 4 selesai,
+              lanjut ke langkah 5 (autentikasi admin).
 
 (tambahkan entri baru di bawah ini setiap ada perubahan penting)
