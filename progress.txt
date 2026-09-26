@@ -242,9 +242,14 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
                Studio, bukan seed script): 1 Service -> 1 PriceOption ->
                1 PriceHistory, relasi terverifikasi. Portfolio & Settings belum
                diisi, tidak perlu untuk pengujian relasi ini.
-[TODO]    5. Autentikasi admin (custom, bukan Auth.js)
-             - hash password, cek login, session/cookie
-             - proteksi route /admin/*
+[DONE]    5. Autentikasi admin (custom, bukan Auth.js)
+             - [DONE] hash password (bcryptjs, disimpan base64 di .env biar
+               aman dari bug expansion tanda $ di Next.js/.env)
+             - [DONE] verifyCredentials (lib/auth/verify-credentials.ts)
+             - [DONE] session lewat cookie httpOnly (jose, lib/auth/session.ts)
+             - [DONE] proteksi route /admin/* (middleware.ts)
+             - [DONE] halaman login (app/admin/login) + placeholder dashboard
+               (app/admin/page.tsx), tested end-to-end berhasil
 [TODO]    6. Admin - CRUD Layanan + Opsi Harga
              - tambah/edit/hapus/aktifkan layanan
              - multi opsi harga per layanan (FIXED/STARTING_FROM/CUSTOM)
@@ -298,5 +303,12 @@ CHANGE LOG
               (init_models) berhasil diterapkan ke Neon. Testing relasi
               lewat Prisma Studio manual insert berhasil. Langkah 4 selesai,
               lanjut ke langkah 5 (autentikasi admin).
+
+26 Sep 2026 - Autentikasi admin custom selesai (bcryptjs + jose + middleware).
+              Sempat kejebak bug: hash password mengandung tanda $ kena
+              expand 2x (shell saat generate, lalu Next.js saat baca .env) -
+              solusi final: hash disimpan base64 di .env, di-decode di kode.
+              Login -> session -> proteksi /admin/* -> redirect ke dashboard
+              placeholder, semua tested berhasil. Langkah 5 selesai.
 
 (tambahkan entri baru di bawah ini setiap ada perubahan penting)
