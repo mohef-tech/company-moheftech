@@ -214,7 +214,7 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
 [DONE]    1. Review & kritisi PRD awal
 [DONE]    2. Diskusi & finalisasi PRD v1.1 (business logic, tech stack,
              hosting)
-[PROGRESS] 3. Setup project awal
+[DONE] 3. Setup project awal
              - [DONE] Pilih provider database: NEON (bukan Supabase -
                Supabase free tier pause total 7 hari tidak aktif harus
                manual restart; Neon auto-resume ~500ms, lebih aman
@@ -228,8 +228,13 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
              - [DONE] Setup environment variables (.env): DATABASE_URL
                (pooled, dipakai aplikasi) & DIRECT_URL (direct, khusus
                migrasi/CLI)
-             - [TODO] Setup akun Netlify + hubungkan repo GitHub
-             - [TODO] Push project ke GitHub repository
+             - [DONE] Setup akun Netlify + hubungkan repo GitHub
+             - [DONE] Push project ke GitHub repository
+             Deploy pertama berhasil (Published):
+               delightful-beijinho-3e0579.netlify.app
+             - [ ] (opsional, nanti) rename project Netlify dari nama
+               acak ke nama yang lebih jelas
+             - [ ] (opsional, nanti) hubungkan custom domain
 [TODO]    4. Schema Prisma & migration awal
              - model: Service, PriceOption, PriceHistory, Portfolio,
                Settings (lihat PRD v1.1 §32)
