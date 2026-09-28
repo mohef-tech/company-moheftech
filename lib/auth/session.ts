@@ -41,3 +41,8 @@ export async function verifySession(): Promise<{ username: string } | null> {
     return null;
   }
 }
+
+export async function deleteSession() {
+  const cookieStore = await cookies();
+  cookieStore.delete(COOKIE_NAME);
+}

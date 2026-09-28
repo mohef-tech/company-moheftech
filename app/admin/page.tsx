@@ -1,4 +1,5 @@
 import { verifySession } from "@/lib/auth/session";
+import Link from "next/link";
 
 export default async function AdminDashboardPage() {
   const session = await verifySession();
@@ -10,6 +11,7 @@ export default async function AdminDashboardPage() {
       <p>
         (Halaman ini placeholder — dashboard beneran dibikin di langkah 6-8)
       </p>
+      <Link href="/admin/layanan">Kelola Layanan</Link>
     </main>
   );
 }

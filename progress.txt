@@ -4,7 +4,7 @@ MOHEF TECH - PROJECT PROGRESS TRACKER
 Lokasi project: cp-moheftech
 Dokumen acuan: PRD_moheftechcompany_v1.1.md
 Dibuat: 26 September 2026
-Terakhir update: 26 September 2026
+Terakhir update: 28 September 2026
 
 Cara pakai file ini:
 - Section "ROADMAP" diupdate statusnya setiap kali satu langkah selesai.
@@ -250,11 +250,14 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
              - [DONE] proteksi route /admin/* (middleware.ts)
              - [DONE] halaman login (app/admin/login) + placeholder dashboard
                (app/admin/page.tsx), tested end-to-end berhasil
-[TODO]    6. Admin - CRUD Layanan + Opsi Harga
-             - tambah/edit/hapus/aktifkan layanan
-             - multi opsi harga per layanan (FIXED/STARTING_FROM/CUSTOM)
-             - internalNote (khusus admin)
-             - price history otomatis tercatat
+[DONE]    6. Admin - CRUD Layanan + Opsi Harga
+             - [DONE] tambah/edit/hapus/aktifkan-nonaktifkan layanan
+               (validasi Zod, slug otomatis dari nama kalau dikosongkan)
+             - [DONE] layout admin (menu + tombol logout)
+             - [DONE] multi opsi harga per layanan (FIXED/STARTING_FROM/CUSTOM)
+             - [DONE] internalNote (khusus admin)
+             - [DONE] price history otomatis: dicatat saat opsi dibuat dan
+               saat nominal berubah; tampil di halaman edit (khusus admin)
 [TODO]    7. Admin - Portfolio (CRUD kartu proyek)
 [TODO]    8. Admin - Pengaturan (satu halaman terpadu)
 [TODO]    9. Halaman publik - Home
@@ -310,5 +313,13 @@ CHANGE LOG
               solusi final: hash disimpan base64 di .env, di-decode di kode.
               Login -> session -> proteksi /admin/* -> redirect ke dashboard
               placeholder, semua tested berhasil. Langkah 5 selesai.
+
+28 Sep 2026 - Langkah 6 selesai: CRUD layanan + opsi harga + price history
+              otomatis, semua sudah dites. Keputusan: history hanya dicatat
+              kalau nominal berubah (perubahan label/catatan tidak dicatat),
+              opsi Custom tanpa nominal tidak membuat baris history.
+              Tampilan admin sengaja masih polos (belum di-styling), dirapikan
+              setelah alur CRUD (langkah 6-8) selesai. Berikutnya langkah 7
+              (admin Portfolio).
 
 (tambahkan entri baru di bawah ini setiap ada perubahan penting)
