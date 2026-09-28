@@ -12,6 +12,7 @@ export default async function AdminDashboardPage() {
         (Halaman ini placeholder — dashboard beneran dibikin di langkah 6-8)
       </p>
       <Link href="/admin/layanan">Kelola Layanan</Link>
+      <Link href="/admin/portfolio">Kelola Portfolio</Link>
     </main>
   );
 }

@@ -19,6 +19,8 @@ export default async function AdminLayout({
         <Link href="/admin">Dashboard</Link>
         {" | "}
         <Link href="/admin/layanan">Layanan</Link>
+        {" | "}
+        <Link href="/admin/portfolio">Portfolio</Link>
         <form action={logout}>
           <button type="submit">Logout</button>
         </form>

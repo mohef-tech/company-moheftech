@@ -258,7 +258,12 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
              - [DONE] internalNote (khusus admin)
              - [DONE] price history otomatis: dicatat saat opsi dibuat dan
                saat nominal berubah; tampil di halaman edit (khusus admin)
-[TODO]    7. Admin - Portfolio (CRUD kartu proyek)
+[DONE]    7. Admin - Portfolio (CRUD kartu proyek)
+             - [DONE] daftar, tambah, edit, hapus kartu proyek
+             - [DONE] tampil/sembunyikan per kartu (isVisible, untuk proyek
+               yang izinnya belum didapat) dan urutan tampil manual (sortOrder)
+             - [DONE] form dipakai bersama lewat komponen portfolio-form
+             - Data yang masuk baru contoh, isi asli menyusul (Open Items)
 [TODO]    8. Admin - Pengaturan (satu halaman terpadu)
 [TODO]    9. Halaman publik - Home
 [TODO]   10. Halaman publik - Layanan (list per pilar + search)
@@ -321,5 +326,11 @@ CHANGE LOG
               Tampilan admin sengaja masih polos (belum di-styling), dirapikan
               setelah alur CRUD (langkah 6-8) selesai. Berikutnya langkah 7
               (admin Portfolio).
+              
+28 Sep 2026 - Langkah 7 selesai: admin Portfolio (CRUD, tampil/sembunyi,
+              urutan manual) sudah dites. Catatan utang teknis kecil: fungsi
+              bantu getText dan requireSession masih terduplikasi di 3 file
+              actions (layanan, price-actions, portfolio), dirapikan saat
+              fase refactor/styling. Berikutnya langkah 8 (admin Pengaturan).
 
 (tambahkan entri baru di bawah ini setiap ada perubahan penting)
