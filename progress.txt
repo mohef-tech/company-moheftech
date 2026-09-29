@@ -278,7 +278,21 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
                ikut ter-reset ke nilai lama saat 1 field gagal validasi
                (bukan bug, cuma UX kasar - form belum "sticky" ke input
                terakhir)
-[TODO]    9. Halaman publik - Home
+[DONE]    9. Halaman publik - Home
+             - [DONE] app/page.tsx: nav + hero section (logo, nama
+               bisnis, tagline, CTA "Lihat Layanan")
+             - [DONE] logo asli Mohef Tech dipasang di public/logo/
+             - [DONE] pakai ulang getOrCreateSettings() dari admin -
+               satu sumber data, tested: ubah di admin langsung
+               kecerminan di publik tanpa restart
+             - [DONE] Tailwind layout dasar (opsi B: layout/responsive
+               distyle, warna/font/branding masih default - full
+               styling ditunda ke fase nanti)
+             - [DONE] tested di HP asli (bukan cuma resize browser):
+               tidak ada overflow, nav wrap rapi
+             - Catatan: link nav (#layanan #tentang #kontak) belum
+               mengarah kemana-mana, section tujuannya baru dibuat di
+               langkah 10-12
 [TODO]   10. Halaman publik - Layanan (list per pilar + search)
 [TODO]   11. Halaman publik - Service detail modal (opsional per layanan)
 [TODO]   12. Halaman publik - Tentang, Kontak, Portfolio
@@ -356,5 +370,11 @@ CHANGE LOG
               di fase refactor/styling, tidak mengganggu fungsi. Semua
               4 langkah CRUD admin (5-8) kini tuntas. Berikutnya masuk
               halaman publik (langkah 9: Home).
+
+29 Sep 2026 - Langkah 9 selesai: Home section (nav+hero) tampil dengan
+              logo asli, data dari Settings, dites cross-device (HP
+              asli via LAN 192.168.x.x) dan konfirmasi live-update dari
+              admin. Berikutnya langkah 10: section Layanan (list per
+              pilar + search).
 
 (tambahkan entri baru di bawah ini setiap ada perubahan penting)
