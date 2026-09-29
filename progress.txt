@@ -264,7 +264,20 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
                yang izinnya belum didapat) dan urutan tampil manual (sortOrder)
              - [DONE] form dipakai bersama lewat komponen portfolio-form
              - Data yang masuk baru contoh, isi asli menyusul (Open Items)
-[TODO]    8. Admin - Pengaturan (satu halaman terpadu)
+[DONE]    8. Admin - Pengaturan (satu halaman terpadu)
+             - [DONE] getOrCreateSettings (upsert pola singleton, id tetap
+               "singleton", auto-buat baris default dari teks PRD kalau
+               belum ada data)
+             - [DONE] form tampil+edit 1 halaman (bukan list, beda dari
+               Layanan/Portfolio)
+             - [DONE] validasi Zod dengan superRefine (googleMapsUrl wajib
+               diisi kalau showGoogleMaps dinyalakan)
+             - [DONE] tested end-to-end: default terisi, ubah+simpan
+               persisten, validasi silang menolak & menampilkan pesan
+             - Open item (ditunda ke fase frontend/styling): field lain
+               ikut ter-reset ke nilai lama saat 1 field gagal validasi
+               (bukan bug, cuma UX kasar - form belum "sticky" ke input
+               terakhir)
 [TODO]    9. Halaman publik - Home
 [TODO]   10. Halaman publik - Layanan (list per pilar + search)
 [TODO]   11. Halaman publik - Service detail modal (opsional per layanan)
@@ -332,5 +345,16 @@ CHANGE LOG
               bantu getText dan requireSession masih terduplikasi di 3 file
               actions (layanan, price-actions, portfolio), dirapikan saat
               fase refactor/styling. Berikutnya langkah 8 (admin Pengaturan).
+
+29 Sep 2026 - Langkah 8 selesai: admin Pengaturan (get-or-create
+              singleton + form + validasi silang Google Maps) sudah
+              dites lengkap. Sempat kejebak overlay Turbopack (syntax
+              error "index") yang ternyata cuma cache basi tidak
+              berhubungan dengan kode - hilang usai ganti tipe
+              LayoutProps<"/"> di root layout ke tipe klasik. Badge
+              "1 Issue" masih nongol sejak awal login, dicek ulang nanti
+              di fase refactor/styling, tidak mengganggu fungsi. Semua
+              4 langkah CRUD admin (5-8) kini tuntas. Berikutnya masuk
+              halaman publik (langkah 9: Home).
 
 (tambahkan entri baru di bawah ini setiap ada perubahan penting)
