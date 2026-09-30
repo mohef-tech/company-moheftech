@@ -1,11 +1,14 @@
+import { Suspense } from "react";
 import Image from "next/image";
 import { getOrCreateSettings } from "@/lib/settings";
 import { getActiveServicesGroupedByPillar } from "@/lib/services";
 import { ServicesSection } from "@/components/public/services-section";
+import { ServiceModal } from "@/components/public/service-modal";
 
 export default async function HomePage() {
   const settings = await getOrCreateSettings();
   const serviceGroups = await getActiveServicesGroupedByPillar();
+  const allServices = serviceGroups.flatMap((group) => group.services);
 
   return (
     <>
@@ -53,6 +56,10 @@ export default async function HomePage() {
       </section>
 
       <ServicesSection groups={serviceGroups} />
+
+      <Suspense fallback={null}>
+        <ServiceModal services={allServices} settings={settings} />
+      </Suspense>
     </>
   );
 }

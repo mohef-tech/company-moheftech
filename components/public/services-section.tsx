@@ -2,12 +2,15 @@
 
 import { useMemo, useState } from "react";
 import { getCheapestPriceLabel } from "@/lib/pricing";
+import Link from "next/link";
 
 type ServiceCard = {
   id: string;
+  slug: string;
   name: string;
   category: string;
   shortDescription: string;
+  description: string | null;
   priceOptions: { price: number | null; priceType: string }[];
 };
 
@@ -79,6 +82,15 @@ export function ServicesSection({ groups }: { groups: PillarGroup[] }) {
                 <p className="font-medium">
                   {getCheapestPriceLabel(service.priceOptions)}
                 </p>
+                {service.description && (
+                  <Link
+                    href={`?layanan=${service.slug}`}
+                    scroll={false}
+                    className="mt-2 inline-block text-sm text-blue-600 underline"
+                  >
+                    Lihat Detail
+                  </Link>
+                )}
               </div>
             ))}
           </div>

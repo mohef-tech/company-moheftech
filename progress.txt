@@ -313,7 +313,31 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
              - Open item: nama pilar final ("Hardware/Software/
                Konsultasi"?) masih didiskusikan owner, data dummy saat
                ini belum konsisten - dirapikan pas input data asli
-[TODO]   11. Halaman publik - Service detail modal (opsional per layanan)
+[DONE]   11. Halaman publik - Service detail modal (opsional per layanan)
+             - [DONE] pola URL query param (?layanan=slug) - dipilih
+               sejak awal supaya Langkah 13 (share link + auto-open)
+               otomatis ikut selesai tanpa bongkar ulang
+             - [DONE] components/public/service-modal.tsx: tampil
+               nama, description, semua opsi harga, tombol tutup
+               (X / klik luar / Esc)
+             - [DONE] tombol "Lihat Detail" cuma muncul kalau
+               description terisi (opsional per layanan sesuai PRD)
+             - [DONE] lib/whatsapp.ts: normalizeWhatsappNumber (0xxx/
+               62xxx -> 62xxx), buildWhatsappLink (encode pesan),
+               buildServiceWhatsappMessage (sisipkan nama layanan ke
+               placeholder [layanan] di template)
+             - [DONE] tombol "Konsultasi via WhatsApp" di modal
+               berfungsi penuh, pesan otomatis terisi + nama layanan
+               tersisip
+             - [DONE] tested: buka modal, refresh (auto-reopen dari
+               URL), copy-paste link ke tab baru (auto-open), tutup
+               via 3 cara, WhatsApp buka dengan pesan benar, nomor
+               ganti ikut Settings
+             - Catatan penting: template pesan WhatsApp WAJIB
+               mengandung teks literal [layanan] (dengan kurung siku)
+               di suatu tempat, kalau tidak ada maka nama layanan
+               TIDAK tersisip (bukan bug - silent no-op). Perlu
+               diingat kalau nanti isi ulang Settings.
 [TODO]   12. Halaman publik - Tentang, Kontak, Portfolio
 [TODO]   13. Link per layanan (slug) + Open Graph preview WhatsApp
 [TODO]   14. WhatsApp integration (normalisasi nomor + encode pesan)
@@ -402,5 +426,14 @@ CHANGE LOG
               basi, bukan bug kode - dikonfirmasi lewat tes ulang di
               desktop console (bersih, tanpa error). Ikon search
               ditambahkan. Berikutnya langkah 11: modal detail layanan.
+
+30 Sep 2026 - Langkah 11 selesai: modal detail layanan + tombol
+              WhatsApp fungsional penuh (lib/whatsapp.ts baru).
+              Ditemukan gotcha: template pesan wajib mengandung
+              literal "[layanan]" atau nama layanan tidak tersisip
+              (silent, no error) - sudah diverifikasi & didokumentasi.
+              7 dari 18 langkah roadmap kini tuntas mencakup search,
+              modal, dan WhatsApp end-to-end. Berikutnya langkah 12:
+              Tentang, Kontak, Portfolio (sisi publik).
 
 (tambahkan entri baru di bawah ini setiap ada perubahan penting)
