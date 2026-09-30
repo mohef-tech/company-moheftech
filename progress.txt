@@ -293,7 +293,26 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
              - Catatan: link nav (#layanan #tentang #kontak) belum
                mengarah kemana-mana, section tujuannya baru dibuat di
                langkah 10-12
-[TODO]   10. Halaman publik - Layanan (list per pilar + search)
+[DONE]   10. Halaman publik - Layanan (list per pilar + search)
+             - [DONE] lib/pricing.ts: getCheapestPriceLabel (fallback
+               "Harga bersaing" utk CUSTOM/tanpa opsi harga)
+             - [DONE] lib/services.ts: getActiveServicesGroupedByPillar
+               (grouping dinamis per nilai pillar, alfabetis - TIDAK
+               hardcode nama pilar, karena masih belum final)
+             - [DONE] components/public/services-section.tsx: client
+               component, search real-time (client-side filter, TIDAK
+               query ke server tiap ketik), empty state sesuai PRD §8
+             - [DONE] ikon search ditambahkan di kolom input
+             - [DONE] tested: grouping per pilar, harga termurah tampil
+               benar, search filter benar & empty state benar, grid
+               responsive di HP (1 kolom) & desktop (multi kolom)
+             - Open item: sempat curiga search "lemot" di HP, ternyata
+               cache browser lama (bukan bug kode) - selesai usai hard
+               refresh. Kalau muncul lagi nanti, cek dulu: cache HP,
+               baru curigai kode.
+             - Open item: nama pilar final ("Hardware/Software/
+               Konsultasi"?) masih didiskusikan owner, data dummy saat
+               ini belum konsisten - dirapikan pas input data asli
 [TODO]   11. Halaman publik - Service detail modal (opsional per layanan)
 [TODO]   12. Halaman publik - Tentang, Kontak, Portfolio
 [TODO]   13. Link per layanan (slug) + Open Graph preview WhatsApp
@@ -376,5 +395,12 @@ CHANGE LOG
               asli via LAN 192.168.x.x) dan konfirmasi live-update dari
               admin. Berikutnya langkah 10: section Layanan (list per
               pilar + search).
+
+30 Sep 2026 - Langkah 10 selesai: section Layanan (grouping per pilar +
+              search + harga termurah) jalan, sempat ada false-alarm
+              "search tidak berfungsi" yang ternyata cache browser HP
+              basi, bukan bug kode - dikonfirmasi lewat tes ulang di
+              desktop console (bersih, tanpa error). Ikon search
+              ditambahkan. Berikutnya langkah 11: modal detail layanan.
 
 (tambahkan entri baru di bawah ini setiap ada perubahan penting)

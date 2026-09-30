@@ -1,8 +1,11 @@
 import Image from "next/image";
 import { getOrCreateSettings } from "@/lib/settings";
+import { getActiveServicesGroupedByPillar } from "@/lib/services";
+import { ServicesSection } from "@/components/public/services-section";
 
 export default async function HomePage() {
   const settings = await getOrCreateSettings();
+  const serviceGroups = await getActiveServicesGroupedByPillar();
 
   return (
     <>
@@ -48,6 +51,8 @@ export default async function HomePage() {
           Lihat Layanan
         </a>
       </section>
+
+      <ServicesSection groups={serviceGroups} />
     </>
   );
 }
