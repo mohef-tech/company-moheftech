@@ -235,6 +235,7 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
              - [ ] (opsional, nanti) rename project Netlify dari nama
                acak ke nama yang lebih jelas
              - [ ] (opsional, nanti) hubungkan custom domain
+
 [DONE]    4. Schema Prisma & migration awal
              - [DONE] model: Service, PriceOption, PriceHistory, Portfolio, Settings
                (lihat PRD v1.1 §32)
@@ -242,6 +243,7 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
                Studio, bukan seed script): 1 Service -> 1 PriceOption ->
                1 PriceHistory, relasi terverifikasi. Portfolio & Settings belum
                diisi, tidak perlu untuk pengujian relasi ini.
+
 [DONE]    5. Autentikasi admin (custom, bukan Auth.js)
              - [DONE] hash password (bcryptjs, disimpan base64 di .env biar
                aman dari bug expansion tanda $ di Next.js/.env)
@@ -250,6 +252,7 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
              - [DONE] proteksi route /admin/* (middleware.ts)
              - [DONE] halaman login (app/admin/login) + placeholder dashboard
                (app/admin/page.tsx), tested end-to-end berhasil
+
 [DONE]    6. Admin - CRUD Layanan + Opsi Harga
              - [DONE] tambah/edit/hapus/aktifkan-nonaktifkan layanan
                (validasi Zod, slug otomatis dari nama kalau dikosongkan)
@@ -258,12 +261,14 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
              - [DONE] internalNote (khusus admin)
              - [DONE] price history otomatis: dicatat saat opsi dibuat dan
                saat nominal berubah; tampil di halaman edit (khusus admin)
+
 [DONE]    7. Admin - Portfolio (CRUD kartu proyek)
              - [DONE] daftar, tambah, edit, hapus kartu proyek
              - [DONE] tampil/sembunyikan per kartu (isVisible, untuk proyek
                yang izinnya belum didapat) dan urutan tampil manual (sortOrder)
              - [DONE] form dipakai bersama lewat komponen portfolio-form
              - Data yang masuk baru contoh, isi asli menyusul (Open Items)
+
 [DONE]    8. Admin - Pengaturan (satu halaman terpadu)
              - [DONE] getOrCreateSettings (upsert pola singleton, id tetap
                "singleton", auto-buat baris default dari teks PRD kalau
@@ -278,6 +283,7 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
                ikut ter-reset ke nilai lama saat 1 field gagal validasi
                (bukan bug, cuma UX kasar - form belum "sticky" ke input
                terakhir)
+
 [DONE]    9. Halaman publik - Home
              - [DONE] app/page.tsx: nav + hero section (logo, nama
                bisnis, tagline, CTA "Lihat Layanan")
@@ -293,6 +299,7 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
              - Catatan: link nav (#layanan #tentang #kontak) belum
                mengarah kemana-mana, section tujuannya baru dibuat di
                langkah 10-12
+
 [DONE]   10. Halaman publik - Layanan (list per pilar + search)
              - [DONE] lib/pricing.ts: getCheapestPriceLabel (fallback
                "Harga bersaing" utk CUSTOM/tanpa opsi harga)
@@ -313,6 +320,7 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
              - Open item: nama pilar final ("Hardware/Software/
                Konsultasi"?) masih didiskusikan owner, data dummy saat
                ini belum konsisten - dirapikan pas input data asli
+
 [DONE]   11. Halaman publik - Service detail modal (opsional per layanan)
              - [DONE] pola URL query param (?layanan=slug) - dipilih
                sejak awal supaya Langkah 13 (share link + auto-open)
@@ -338,7 +346,33 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
                di suatu tempat, kalau tidak ada maka nama layanan
                TIDAK tersisip (bukan bug - silent no-op). Perlu
                diingat kalau nanti isi ulang Settings.
-[TODO]   12. Halaman publik - Tentang, Kontak, Portfolio
+
+[DONE]   12. Halaman publik - Tentang, Kontak, Portfolio
+             - [DONE] Section Tentang: tampil aboutDescription dari
+               Settings
+             - [DONE] Section Kontak: nomor WA utama+alternatif,
+               tombol WhatsApp (pesan general, opsi B - bukan pakai
+               template [layanan]), locationMeetingText, link Google
+               Maps (conditional sesuai showGoogleMaps toggle)
+             - [DONE] Section Portfolio - DIFRAMING ULANG jadi "Produk"
+               (title=nama produk, solutionType=kategori). Tetap teks
+               saja (sesuai batas PRD, bukan sistem galeri/trial).
+               Rencana jangka panjang owner: next produk hardware +
+               link ke halaman trial - DICATAT sebagai ide masa depan,
+               BUKAN dikerjakan sekarang (selaras scope V2 di PRD §13)
+             - [DONE] Portfolio dapat link nav sendiri: Home | Layanan
+               | Tentang | Portfolio | Kontak
+             - [DONE] empty state "Produk sedang disiapkan." saat belum
+               ada data isVisible=true (opsi B disetujui owner)
+             - [DONE] lib/portfolio.ts: getVisiblePortfolio()
+             - [DONE] tested lengkap: empty state, nav link, tampil
+               setelah isi data admin, hilang lagi saat isVisible
+               dimatikan
+             - Open item (noted, bukan bug): navbar tidak sticky - klik
+               nav link dari posisi scroll bawah berhasil lompat ke
+               section, tapi nav ikut hilang dari layar (bukan stay di
+               atas). Perbaikan: tambah "sticky top-0" ke <header> saat
+               fase styling nanti.
 [TODO]   13. Link per layanan (slug) + Open Graph preview WhatsApp
 [TODO]   14. WhatsApp integration (normalisasi nomor + encode pesan)
 [TODO]   15. SEO dasar, performa (Lighthouse check), aksesibilitas
@@ -435,5 +469,15 @@ CHANGE LOG
               7 dari 18 langkah roadmap kini tuntas mencakup search,
               modal, dan WhatsApp end-to-end. Berikutnya langkah 12:
               Tentang, Kontak, Portfolio (sisi publik).
+
+01 October 2026 - Langkah 12 selesai: Tentang, Kontak, Portfolio (diframing
+              ulang jadi "Produk" atas permintaan owner - tetap teks
+              saja, trial/galeri ditunda ke V2 sesuai PRD). Portfolio
+              dapat nav link sendiri. Noted: navbar belum sticky,
+              diperbaiki saat fase styling. SELURUH HALAMAN PUBLIK
+              ONE-PAGE KINI TUNTAS (Home+Layanan+Tentang+Portfolio+
+              Kontak). Berikutnya langkah 15: SEO dasar, performa,
+              aksesibilitas (langkah 13-14 sudah selesai duluan sejak
+              modal+whatsapp dibangun sekalian di langkah 11).
 
 (tambahkan entri baru di bawah ini setiap ada perubahan penting)
