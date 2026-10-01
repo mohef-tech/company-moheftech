@@ -15,6 +15,7 @@ export function ConfirmButton({
           event.preventDefault();
         }
       }}
+      className="rounded border border-red-300 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50"
     >
       {label}
     </button>
