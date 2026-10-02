@@ -373,10 +373,42 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
                section, tapi nav ikut hilang dari layar (bukan stay di
                atas). Perbaikan: tambah "sticky top-0" ke <header> saat
                fase styling nanti.
-[TODO]   13. Link per layanan (slug) + Open Graph preview WhatsApp
-[TODO]   14. WhatsApp integration (normalisasi nomor + encode pesan)
-[TODO]   15. SEO dasar, performa (Lighthouse check), aksesibilitas
-             modal (focus trap, esc, dsb)
+
+[DONE]   15. Styling Admin (menggantikan slot "SEO/Performa/A11y" -
+             digeser ke dekat langkah 17/sebelum deploy final, karena
+             prioritas rendah untuk model bisnis ini - traffic dari
+             link personal, bukan pencarian organik)
+             - [DONE] Layout admin diubah dari nav-atas ke SIDEBAR KIRI
+               (referensi dashboard dari owner, warna di-NETRALISIR
+               abu-abu/hitam/putih - warna brand masih ditahan sampai
+               kode HEX final dari owner)
+             - [DONE] app/admin/layout.tsx: sidebar + menu + logout
+             - [DONE] Login: tetap halaman terpisah, tidak ikut sidebar
+               (dikonfirmasi benar via testing)
+             - [DONE] Dashboard: 3 kartu menu (Layanan/Portfolio/
+               Pengaturan)
+             - [DONE] Layanan: list (tabel+badge status), form
+               tambah/edit, opsi harga (form inline + riwayat
+               collapsible), tombol Hapus Layanan BARU DITAMBAHKAN
+               (sebelumnya form kosong tanpa tombol - ketemu & dibenerin
+               saat styling)
+             - [DONE] Portfolio: list (tabel+badge status), form
+               tambah/edit (PortfolioForm shared component), tombol
+               Hapus Portfolio dirapikan pola "Zona Berbahaya" konsisten
+               dgn Layanan
+             - [DONE] Pengaturan: form 1 halaman
+             - [DONE] ConfirmButton: styling merah konsisten di semua
+               tombol hapus
+             - [FIXED] root layout (app/layout.tsx) sempat KETIMPA tidak
+               sengaja oleh kode admin layout saat tempel kode - root
+               ke-reset, publik sempat down. Sekalian dibenerin title/
+               description metadata ("Create Next App" -> "Mohef Tech")
+             - Data asli mulai diisi: Sistem Kasir Cafe, Mohef Chatbot,
+               Sistem Gudang Clarice Beauty
+             - Open item: sidebar belum ada highlight halaman aktif
+               (usePathname) dan belum responsive utk layar sangat
+               sempit - tidak masalah, admin memang didesain utk laptop
+
 [TODO]   16. Testing menyeluruh (admin flow + user flow)
 [TODO]   17. Deployment ke Netlify + custom domain
 [TODO]   18. Verifikasi akhir vs Technical Definition of Done
@@ -480,4 +512,17 @@ CHANGE LOG
               aksesibilitas (langkah 13-14 sudah selesai duluan sejak
               modal+whatsapp dibangun sekalian di langkah 11).
 
+2 Okt 2026 - Langkah 15 (Styling Admin) tuntas: layout sidebar kiri
+             diterapkan di semua halaman admin (Dashboard, Layanan,
+             Portfolio, Pengaturan), warna tetap netral sesuai
+             kesepakatan (brand color ditahan). Insiden: root
+             app/layout.tsx sempat tertimpa kode admin saat proses
+             tempel kode kemarin - FIXED, sekaligus benerin metadata
+             title. Ditemukan & ditambahkan: tombol Hapus Layanan yang
+             dari awal form-nya kosong tanpa tombol. SELURUH SISI ADMIN
+             (8 halaman) kini sudah rapi & konsisten. Data Portfolio
+             asli mulai diisi (Kasir Cafe, Chatbot, Gudang Clarice
+             Beauty). Berikutnya: styling sisi PUBLIK (Home, Layanan,
+             Modal, Tentang, Portfolio, Kontak) - MENUNGGU kode HEX
+             warna brand dari owner sebelum bisa dikerjakan penuh.
 (tambahkan entri baru di bawah ini setiap ada perubahan penting)
