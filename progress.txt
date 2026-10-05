@@ -409,7 +409,57 @@ Status: [DONE] selesai | [PROGRESS] sedang jalan | [TODO] belum mulai
                (usePathname) dan belum responsive utk layar sangat
                sempit - tidak masalah, admin memang didesain utk laptop
 
-[TODO]   16. Testing menyeluruh (admin flow + user flow)
+[DONE]   16. Styling Publik (Home, Layanan, Modal, Tentang, Portfolio,
+             Kontak) - MENUNGGU kode HEX dari owner, lanjut setelah
+             didapat: Hitam Elegan #1F1F1F, Biru Mohef #0056D2, Biru
+             tua Mohef #0A2A35, Abu Tua #555555, Putih #FFFFFF, font
+             Poppins
+             - [DONE] app/globals.css: token warna via @theme (
+               mohef-blue, mohef-navy, mohef-gray), dark-mode OTOMATIS
+               DIHAPUS (brand dirancang utk tampilan terang saja,
+               supaya tidak ada kombinasi warna tak terbaca)
+             - [DONE] Font: Geist -> Poppins (bold utk heading saja,
+               bukan semua teks)
+             - [DONE] Nav: dibuat STICKY (buka open item dari Langkah
+               12) + branded (logo, nama navy, hover biru)
+             - [DONE] Hero: warna navy/biru/gray diterapkan
+             - [DONE] FIX BUG SAFARI: nav sticky awalnya pakai
+               backdrop-blur -> bikin Safari iOS FREEZE TOTAL saat klik
+               anchor link (WebKit bug dikenal: sticky+backdrop-blur).
+               Dicabut jadi bg-white solid - terkonfirmasi fix di
+               iPhone asli
+             - [DONE] min-h-[80vh] -> min-h-[80svh] di hero (svh =
+               small viewport height, aman dari address-bar mobile
+               browser yang naik-turun)
+             - [DONE] Section Layanan: warna diterapkan + TOMBOL
+               WHATSAPP DITAMBAHKAN di empty state "tidak ditemukan"
+               (sebelumnya cuma komentar placeholder dari Langkah 11,
+               padahal udah dianggap selesai - ketemu & dibenerin saat
+               styling)
+             - [DONE] Modal: warna diterapkan (overlay navy/60, bukan
+               hitam generik)
+             - [DONE] FIX BUG NYATA: hydration mismatch harga ("Rp
+               100.000" vs "Rp100.000" - Intl.NumberFormat currency IDR
+               tidak konsisten server vs client). lib/pricing.ts
+               formatRupiah ditulis manual ("Rp " + angka) jadi
+               deterministik. Ini kandidat kuat penyebab keluhan
+               "lemot" yang sempat ditunda dari Langkah 10 - worth
+               dicek ulang rasanya sekarang
+             - [DONE] Section Tentang: warna diterapkan
+             - [DONE] Section Portfolio: DIBUAT BEDA - latar navy gelap
+               + teks putih (bukan putih spt section lain), biar
+               produk unggulan terasa menonjol
+             - [DONE] Section Kontak: warna diterapkan, link Google
+               Maps dites nyata (bukan cuma kondisional kosong)
+             - Pola berulang disadari: setiap kali pakai TOKEN WARNA
+               BARU pertama kali (bg-mohef-navy dll), Tailwind/Turbopack
+               butuh "rm -rf .next" dulu baru kebaca - BUKAN bug kode,
+               rutin terjadi, jangan panik kalau warna baru awalnya
+               tidak nongol
+             - Open item: badge "1 Issue"/"2 Issues" (syntax error
+               ghost index/if) masih ada sejak Langkah 8, tetap
+               terkonfirmasi tidak mengganggu fungsi, dibiarkan
+
 [TODO]   17. Deployment ke Netlify + custom domain
 [TODO]   18. Verifikasi akhir vs Technical Definition of Done
              (PRD v1.1 §47)
@@ -525,4 +575,20 @@ CHANGE LOG
              Beauty). Berikutnya: styling sisi PUBLIK (Home, Layanan,
              Modal, Tentang, Portfolio, Kontak) - MENUNGGU kode HEX
              warna brand dari owner sebelum bisa dikerjakan penuh.
+
+5 Okt 2026 - SELURUH STYLING PUBLIK TUNTAS (Nav, Hero, Layanan, Modal,
+             Tentang, Portfolio, Kontak) dengan warna brand resmi
+             (Poppins, #0056D2, #0A2A35, #1F1F1F, #555555). 2 bug nyata
+             ditemukan & diperbaiki selama proses: (1) Safari iOS
+             freeze total akibat sticky+backdrop-blur, dikonfirmasi fix
+             di device asli; (2) hydration mismatch format Rupiah,
+             kandidat kuat penyebab keluhan performa lama. 1 gap
+             fungsional ketemu & dibenerin: tombol WhatsApp di empty
+             state search yang ternyata cuma placeholder sejak Langkah
+             11. Portfolio sengaja dibuat kontras (navy gelap) sebagai
+             pembeda visual. SELURUH APLIKASI (admin+publik) KINI
+             SUDAH STYLED PENUH. Berikutnya: SEO/performa/aksesibilitas
+             (slot asli Langkah 15) sebelum deployment final, atau
+             owner bisa mulai isi data layanan/harga asli secara penuh.
+
 (tambahkan entri baru di bawah ini setiap ada perubahan penting)

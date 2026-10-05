@@ -1,13 +1,11 @@
 import type { PriceOption } from "@prisma/client";
 
-const currency = new Intl.NumberFormat("id-ID", {
-  style: "currency",
-  currency: "IDR",
+const numberFormatter = new Intl.NumberFormat("id-ID", {
   maximumFractionDigits: 0,
 });
 
 export function formatRupiah(amount: number) {
-  return currency.format(amount);
+  return `Rp ${numberFormatter.format(amount)}`;
 }
 
 export function getCheapestPriceLabel(

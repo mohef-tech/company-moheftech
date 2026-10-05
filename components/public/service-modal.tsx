@@ -56,7 +56,7 @@ export function ServiceModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-mohef-navy/60 p-4"
       onClick={close}
     >
       <div
@@ -64,31 +64,31 @@ export function ServiceModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-start justify-between gap-4">
-          <h3 className="text-xl font-bold">{service.name}</h3>
+          <h3 className="text-xl font-bold text-mohef-navy">{service.name}</h3>
           <button
             onClick={close}
             aria-label="Tutup"
-            className="text-2xl leading-none"
+            className="text-2xl leading-none text-mohef-gray hover:text-mohef-navy"
           >
             &times;
           </button>
         </div>
 
         {service.description && (
-          <p className="mb-4 whitespace-pre-line text-gray-700">
+          <p className="mb-4 whitespace-pre-line text-mohef-gray">
             {service.description}
           </p>
         )}
 
         <div className="mb-4 space-y-2">
-          <p className="font-medium">Opsi harga:</p>
+          <p className="font-medium text-mohef-navy">Opsi harga:</p>
           {service.priceOptions.map((option) => (
             <div
               key={option.id}
               className="flex justify-between border-b border-gray-100 pb-1 text-sm"
             >
-              <span>{option.label}</span>
-              <span className="font-medium">
+              <span className="text-mohef-gray">{option.label}</span>
+              <span className="font-semibold text-mohef-blue">
                 {option.price !== null
                   ? formatRupiah(option.price)
                   : "Konsultasi"}
@@ -97,7 +97,7 @@ export function ServiceModal({
           ))}
         </div>
 
-        <p className="mb-4 text-xs text-gray-500">
+        <p className="mb-4 text-xs text-mohef-gray">
           Catatan: Harga dapat menyesuaikan kondisi dan kebutuhan.
         </p>
 
