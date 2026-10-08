@@ -55,65 +55,169 @@ export function ServiceModal({
   if (!service) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-mohef-navy/60 p-4"
-      onClick={close}
-    >
-      <div
-        className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded bg-white p-6"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="mb-4 flex items-start justify-between gap-4">
-          <h3 className="text-xl font-bold text-mohef-navy">{service.name}</h3>
+    <div className="modal-overlay" onClick={close}>
+      <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+        {/* Header */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            gap: 16,
+            marginBottom: 24,
+          }}
+        >
+          <div>
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "4px 12px",
+                borderRadius: 50,
+                background: "rgba(59,130,246,0.1)",
+                border: "1px solid rgba(59,130,246,0.25)",
+                color: "#60a5fa",
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                marginBottom: 10,
+              }}
+            >
+              Detail Layanan
+            </div>
+            <h3
+              style={{
+                fontSize: 22,
+                fontWeight: 700,
+                color: "#e8edf5",
+                lineHeight: 1.3,
+              }}
+            >
+              {service.name}
+            </h3>
+          </div>
+
           <button
             onClick={close}
             aria-label="Tutup"
-            className="text-2xl leading-none text-mohef-gray hover:text-mohef-navy"
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              background: "rgba(59,130,246,0.1)",
+              border: "1px solid rgba(59,130,246,0.2)",
+              color: "#94a3b8",
+              fontSize: 18,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "rgba(59,130,246,0.2)";
+              (e.currentTarget as HTMLElement).style.color = "#e8edf5";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "rgba(59,130,246,0.1)";
+              (e.currentTarget as HTMLElement).style.color = "#94a3b8";
+            }}
           >
-            &times;
+            ✕
           </button>
         </div>
 
+        {/* Divider */}
+        <div
+          style={{
+            height: 1,
+            background: "linear-gradient(90deg, rgba(59,130,246,0.4), transparent)",
+            marginBottom: 20,
+          }}
+        />
+
+        {/* Description */}
         {service.description && (
-          <p className="mb-4 whitespace-pre-line text-mohef-gray">
+          <p
+            style={{
+              marginBottom: 24,
+              whiteSpace: "pre-line",
+              color: "#94a3b8",
+              fontSize: 14,
+              lineHeight: 1.7,
+            }}
+          >
             {service.description}
           </p>
         )}
 
-        <div className="mb-4 space-y-2">
-          <p className="font-medium text-mohef-navy">Opsi harga:</p>
+        {/* Pricing */}
+        <div
+          style={{
+            background: "rgba(59,130,246,0.05)",
+            border: "1px solid rgba(59,130,246,0.15)",
+            borderRadius: 12,
+            padding: 20,
+            marginBottom: 20,
+          }}
+        >
+          <p
+            style={{
+              fontSize: 12,
+              fontWeight: 700,
+              color: "#60a5fa",
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              marginBottom: 12,
+            }}
+          >
+            💰 Opsi Harga
+          </p>
+
           {service.priceOptions.map((option) => (
-            <div
-              key={option.id}
-              className="flex justify-between border-b border-gray-100 pb-1 text-sm"
-            >
-              <span className="text-mohef-gray">{option.label}</span>
-              <span className="font-semibold text-mohef-blue">
-                {option.price !== null
-                  ? formatRupiah(option.price)
-                  : "Konsultasi"}
+            <div key={option.id} className="modal-price-row">
+              <span style={{ fontSize: 14, color: "#94a3b8" }}>{option.label}</span>
+              <span
+                style={{
+                  fontSize: 15,
+                  fontWeight: 700,
+                  background: "linear-gradient(135deg, #3b82f6, #06b6d4)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                {option.price !== null ? formatRupiah(option.price) : "Konsultasi"}
               </span>
             </div>
           ))}
         </div>
 
-        <p className="mb-4 text-xs text-mohef-gray">
-          Catatan: Harga dapat menyesuaikan kondisi dan kebutuhan.
+        <p
+          style={{
+            fontSize: 12,
+            color: "#475569",
+            marginBottom: 20,
+            fontStyle: "italic",
+          }}
+        >
+          * Harga dapat menyesuaikan kondisi dan kebutuhan spesifik.
         </p>
 
         <a
           href={buildWhatsappLink(
             settings.primaryWhatsapp,
-            buildServiceWhatsappMessage(
-              settings.whatsappMessageTemplate,
-              service.name,
-            ),
+            buildServiceWhatsappMessage(settings.whatsappMessageTemplate, service.name),
           )}
           target="_blank"
           rel="noopener noreferrer"
-          className="block rounded bg-green-600 px-4 py-3 text-center font-medium text-white hover:bg-green-700"
+          className="btn-whatsapp"
+          style={{ width: "100%", justifyContent: "center" }}
         >
-          Konsultasi via WhatsApp
+          <span>💬</span> Konsultasi via WhatsApp
         </a>
       </div>
     </div>

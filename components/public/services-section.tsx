@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import type { PriceType } from "@prisma/client";
 import { getCheapestPriceLabel } from "@/lib/pricing";
 import { buildWhatsappLink } from "@/lib/whatsapp";
 
@@ -12,7 +13,7 @@ type ServiceCard = {
   category: string;
   shortDescription: string;
   description: string | null;
-  priceOptions: { price: number | null; priceType: string }[];
+  priceOptions: { price: number | null; priceType: PriceType }[];
 };
 
 type PillarGroup = {
@@ -24,6 +25,96 @@ type SettingsForServices = {
   primaryWhatsapp: string;
 };
 
+// Icon map for pillars
+const pillarIcons: Record<string, string> = {
+  default: "⚡",
+  web: "🌐",
+  mobile: "📱",
+  design: "🎨",
+  marketing: "📣",
+  cloud: "☁️",
+  data: "📊",
+  security: "🔒",
+  konsultasi: "💡",
+};
+
+function getPillarIcon(pillar: string): string {
+  const lower = pillar.toLowerCase();
+  for (const [key, icon] of Object.entries(pillarIcons)) {
+    if (lower.includes(key)) return icon;
+  }
+  return pillarIcons.default;
+}
+
+function ServiceCardComponent({
+  service,
+  index,
+}: {
+  service: ServiceCard;
+  index: number;
+}) {
+  return (
+    <div
+      className="service-card reveal"
+      style={{ transitionDelay: `${index * 0.08}s` }}
+    >
+      <div className="service-card-icon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.5}
+          style={{ width: 22, height: 22, color: "#60a5fa" }}
+        >
+          <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      </div>
+
+      <h4 style={{ fontWeight: 700, fontSize: 16, color: "#e8edf5", marginBottom: 8 }}>
+        {service.name}
+      </h4>
+
+      <p style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.6, marginBottom: 12 }}>
+        {service.shortDescription}
+      </p>
+
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "auto" }}>
+        <p className="service-price">
+          {getCheapestPriceLabel(service.priceOptions)}
+        </p>
+
+        {service.description && (
+          <Link
+            href={`?layanan=${service.slug}`}
+            scroll={false}
+            style={{
+              fontSize: 12,
+              color: "#60a5fa",
+              textDecoration: "none",
+              padding: "6px 14px",
+              borderRadius: 50,
+              border: "1px solid rgba(59,130,246,0.3)",
+              transition: "all 0.2s",
+              fontWeight: 600,
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "rgba(59,130,246,0.15)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(59,130,246,0.6)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(59,130,246,0.3)";
+            }}
+          >
+            Detail →
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function ServicesSection({
   groups,
   settings,
@@ -32,6 +123,7 @@ export function ServicesSection({
   settings: SettingsForServices;
 }) {
   const [query, setQuery] = useState("");
+  const sectionRef = useRef<HTMLElement>(null);
 
   const filteredGroups = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -52,41 +144,112 @@ export function ServicesSection({
 
   const hasAnyResult = filteredGroups.length > 0;
 
-  return (
-    <section id="layanan" className="px-4 py-16 sm:px-8">
-      <h2 className="mb-6 text-2xl font-bold text-mohef-navy sm:text-3xl">
-        Layanan
-      </h2>
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
 
-      <div className="relative mb-10 w-full max-w-md">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Cari layanan..."
-          className="w-full rounded border border-gray-300 px-4 py-2 pr-10 text-foreground focus:border-mohef-blue focus:outline-none"
-        />
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          className="pointer-events-none absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-mohef-gray"
-        >
-          <circle cx="11" cy="11" r="7" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
+    // Jika ada query aktif, langsung visible semua kartu tanpa animasi
+    if (query.trim()) {
+      section.querySelectorAll(".reveal").forEach((el) => {
+        el.classList.add("visible");
+      });
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.05, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    // Re-observe semua elemen setiap kali filteredGroups berubah
+    const elements = section.querySelectorAll(".reveal");
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [filteredGroups, query]);
+
+  return (
+    <section
+      id="layanan"
+      ref={sectionRef}
+      style={{
+        position: "relative",
+        zIndex: 1,
+        padding: "100px 24px",
+        maxWidth: 1200,
+        margin: "0 auto",
+        width: "100%",
+      }}
+    >
+      {/* Header */}
+      <div className="reveal" style={{ marginBottom: 48 }}>
+        <div className="section-label">
+          <span>🛠</span>
+          <span>Layanan Kami</span>
+        </div>
+        <h2 className="section-title">
+          Solusi Digital{" "}
+          <span className="gradient-text">Terpercaya</span>
+        </h2>
+        <div className="gradient-divider" />
+        <p className="section-desc">
+          Kami hadir dengan berbagai layanan IT profesional untuk kebutuhan
+          digital bisnis Anda — dari web hingga konsultasi teknologi.
+        </p>
       </div>
 
+      {/* Search */}
+      <div className="reveal reveal-delay-1" style={{ marginBottom: 48 }}>
+        <div className="search-wrapper">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Cari layanan yang Anda butuhkan..."
+            className="search-input"
+            id="layanan-search"
+          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            style={{
+              position: "absolute",
+              right: 18,
+              top: "50%",
+              transform: "translateY(-50%)",
+              width: 18,
+              height: 18,
+              color: "#475569",
+              pointerEvents: "none",
+            }}
+          >
+            <circle cx="11" cy="11" r="7" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </div>
+      </div>
+
+      {/* No results */}
       {!hasAnyResult && (
-        <div className="rounded border border-gray-200 p-6 text-center">
-          <p className="mb-2 font-medium text-mohef-navy">
-            Layanan tidak ditemukan.
+        <div
+          className="glass-card"
+          style={{ padding: 40, textAlign: "center", maxWidth: 480 }}
+        >
+          <p style={{ fontSize: 20, marginBottom: 8 }}>🔍</p>
+          <p style={{ fontWeight: 700, color: "#e8edf5", marginBottom: 8 }}>
+            Layanan tidak ditemukan
           </p>
-          <p className="mb-4 text-mohef-gray">
-            Tidak menemukan layanan yang sesuai? Konsultasikan kebutuhan Anda
-            langsung dengan Mohef Tech.
+          <p style={{ fontSize: 14, color: "#94a3b8", marginBottom: 20 }}>
+            Konsultasikan kebutuhan Anda langsung dengan kami.
           </p>
           <a
             href={buildWhatsappLink(
@@ -95,43 +258,34 @@ export function ServicesSection({
             )}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block rounded bg-green-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-green-700"
+            className="btn-whatsapp"
+            style={{ display: "inline-flex", fontSize: 14 }}
           >
-            Konsultasi via WhatsApp
+            <span>💬</span> Konsultasi via WhatsApp
           </a>
         </div>
       )}
 
+      {/* Groups */}
       {filteredGroups.map((group) => (
-        <div key={group.pillar} className="mb-10">
-          <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-mohef-blue">
-            {group.pillar}
-          </h3>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {group.services.map((service) => (
-              <div
-                key={service.id}
-                className="rounded border border-gray-200 p-4 transition hover:border-mohef-blue/40 hover:shadow-sm"
-              >
-                <h4 className="font-semibold text-mohef-navy">
-                  {service.name}
-                </h4>
-                <p className="mb-2 text-sm text-mohef-gray">
-                  {service.shortDescription}
-                </p>
-                <p className="font-semibold text-mohef-blue">
-                  {getCheapestPriceLabel(service.priceOptions)}
-                </p>
-                {service.description && (
-                  <Link
-                    href={`?layanan=${service.slug}`}
-                    scroll={false}
-                    className="mt-2 inline-block text-sm text-mohef-blue underline hover:text-mohef-navy"
-                  >
-                    Lihat Detail
-                  </Link>
-                )}
-              </div>
+        <div key={group.pillar} style={{ marginBottom: 60 }}>
+          <div
+            className="reveal pillar-badge"
+            style={{ display: "inline-flex" }}
+          >
+            <span>{getPillarIcon(group.pillar)}</span>
+            <span>{group.pillar}</span>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+              gap: 20,
+            }}
+          >
+            {group.services.map((service, i) => (
+              <ServiceCardComponent key={service.id} service={service} index={i} />
             ))}
           </div>
         </div>
