@@ -591,4 +591,6 @@ CHANGE LOG
              (slot asli Langkah 15) sebelum deployment final, atau
              owner bisa mulai isi data layanan/harga asli secara penuh.
 
+8 Okt 2026 - Redesign tampilan public total (dark mode, glassmorphism, animated background, fix search bug) - 2.5 jam kerja. Hasil: 1 halaman fullstack dengan UI modern & performa better. Keterangan lebih detail di changelog. Berikutnya: SEO, performa, aksesibilitas (slot asli Langkah 15) sebelum deployment final, atau owner bisa mulai isi data layanan/harga asli secara penuh.
+
 (tambahkan entri baru di bawah ini setiap ada perubahan penting)
